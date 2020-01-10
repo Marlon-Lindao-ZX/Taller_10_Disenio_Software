@@ -1,110 +1,19 @@
-public enum ModoConduccion { AUTOMATICO, MANUAL }
-public enum TipoVehiculo {TURISMO, DEPORTIVO, RALLY}
-public class Vehiculo {
-    int maxPotencia;
-    int rpm;
-    int maxCombustible;
-    int restanteCombustible;
-    int velocidades;
-    String name;
-    String serie;
-    int colorR;
-    int colorG;
-    int colorB;
-    ModoConduccion modo;
-    TipoVehiculo tipo;
-    public Vehiculo(String nombre, String serie, int fuel, 
-        int power, int vel){
-      this.serie =serie;
-      name = nombre;
-      maxCombustible = restanteCombustible = fuel;
-      maxPotencia = power;
-      velocidades = vel;
-      colorR = colorG = colorB = 255;
-      rpm = 1;
-      modo = MANUAL;
-      tipo = TURISMO;
-    }
-    public ModoConduccion getModo(){ return modo; }
-    public void setModo(ModoConduccion mode){modo = mode;}
-    public TipoVehiculo getTipo(){return tipo;}
-    public void setTipo(TipoVehiculo type){ tipo = type; }
-    public int getMaxPotencia() { return maxPotencia;  }
-    public int getMaxCombustible() {  return maxCombustible; }
-    public int setCombustible(final int fuel) {
-      if (this.maxCombustible >= fuel){ 
-        this.restanteCombustible = fuel; }
-      else{ restanteCombustible = maxCombustible; }  
-    }
-    /** Permite acelerar el vehiculo de acuerdo a su 
-     * modo de conducción **/
-    public void _acc_for_mod(){
-      if(rpm < maxPotencia){
-        switch (this.modo){
-          case AUTOMATICO:
-            //Verifica que no se pase de su máxima potencia
-            if(maxPotencia > rpm + 2 && restanteCombustible > 1 ){ 
-                rpm += 2; 
-                restanteCombustible--; 
-            }
-            //Si ya no hay combustible el carro se debe detener
-            if(restanteCombustible == 0 ){ rpm = 0; }
-            break;
-          case MANUAL:
-            //Verifica que no se pase de su máxima potencia
-            if(maxPotencia > rpm + 5 && restanteCombustible > 1 ){ 
-                rpm += 5; 
-                restanteCombustible--; 
-            }
-            //Si ya no hay combustible el carro se debe detener
-            if(restanteCombustible == 0 ){ rpm = 0; }
-            break;
-        }
-      }
-    }
-  public void inicializar(){
-      switch (this.tipo){
-        case TURISMO:
-          this.setMaxPotencia(50);
-          this.maxCombustible(1000);
-          this.rpm = 1;
-          this.velocidades = 5;
-          this.acelerar();
-          break;
-        case DEPORTIVO:
-          this.setMaxPotencia(80);
-          this.maxCombustible(700);
-          this.rpm = 1;
-          this.velocidades = 6;
-          this.acelerar();
-          break;
-        case RALLY:
-          this.setMaxPotencia(70);
-          this.maxCombustible(1100);
-          this.rpm = 1;
-          this.velocidades = 5;
-          this.acelerar();
-          break;
-        default:
-          this.setMaxPotencia(50);
-          this.maxCombustible(500);
-          this.rpm = 1;
-          this.velocidades = 5;
-          this.acelerar();
-          break;
-      }
-    }
-}
+package main;
+
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Carreras{
   public static void main(String[] args) {
-    ArrayList <Vehiculo> autos;
+    ArrayList <Vehiculo> autos = new ArrayList<>();
     for(int i = 0 ; i< 25 ; i++){
       Vehiculo v = new Vehiculo("Auto_"+i, 
         "serie0"+i, 0,0,0);
-      v.setTipo(DEPORTIVO);
-      v.colorR = Random.randInt(0,255);
-      v.colorG = Random.randInt(0,255);
-      v.colorB = Random.randInt(0,255);
+      v.setTipo(TipoVehiculo.DEPORTIVO);
+      Random r = new Random(); 
+      v.colorR = r.nextInt(256);
+      v.colorG = r.nextInt(256);
+      v.colorB = r.nextInt(256);
       System.out.println(v.name + " (" 
         + v.colorR + "," + v.colorG + "," + 
         v.colorB + ")");
